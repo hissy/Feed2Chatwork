@@ -4,7 +4,7 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
-$app = new \Symfony\Component\Console\Application('Feed 2 Charwork', '0.1');
+$app = new \Symfony\Component\Console\Application('Feed 2 Chatwork', '0.1');
 $app->addCommands([
         new \Hissy\Feed2Chatwork\Command\IntegrateCommand()
 ]);
