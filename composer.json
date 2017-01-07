@@ -1,0 +1,22 @@
+{
+    "name": "hissy/feed-to-chatwork",
+    "description": "Push notification to chatwork from rss feeds.",
+    "licence": "MIT",
+    "authors": [
+        {
+            "name": "Takuro Hishikawa"
+        }
+    ],
+    "require": {
+        "illuminate/config": "^5.3",
+        "symfony/console": "^3.2",
+        "fguillot/picofeed": "@stable",
+        "guzzlehttp/guzzle": "~6.0",
+        "cakephp/chronos": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Hissy\\Feed2Chatwork\\": "src"
+        }
+    }
+}
