@@ -60,27 +60,32 @@ class IntegrateCommand extends Command
             $feed = $parser->execute();
             $items = $feed->getItems();
 
+            $posts = [];
+
             /** @var Item $item */
             foreach ($items as $item) {
                 $date = new Chronos($item->getDate()->format('Y-m-d H:i:s.u'), $item->getDate()->getTimezone());
                 if ($date->gt($last_fetched)) {
-                    $client->post(
-                        sprintf('/v1/rooms/%d/messages', $setting['room_id']),
-                        [
-                            'headers' => [
-                                'X-ChatWorkToken' => $config->get('chatwork.token')
-                            ],
-                            'form_params' => [
-                                'body' => sprintf(
-                                    '[info][title]%s[/title]%s[hr]%s[/info]',
-                                    $item->getTitle(),
-                                    strip_tags($item->getContent()),
-                                    $item->getUrl()
-                                )
-                            ]
-                        ]
-                    );
+                    $posts[] = sprintf("# %s\n%s\n%s", $item->getTitle(), strip_tags($item->getContent()), $item->getUrl());
                 }
+            }
+
+            if ($posts) {
+                $client->post(
+                    sprintf('/v1/rooms/%d/messages', $setting['room_id']),
+                    [
+                        'headers' => [
+                            'X-ChatWorkToken' => $config->get('chatwork.token')
+                        ],
+                        'form_params' => [
+                            'body' => sprintf(
+                                '[info][title]%s has been updated.[/title]%s[/info]',
+                                $feed->getTitle(),
+                                implode('[hr]', $posts)
+                            )
+                        ]
+                    ]
+                );
             }
         }
 
